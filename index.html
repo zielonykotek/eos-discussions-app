@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <script>
+        (function () {
+            if (window.location.protocol == 'http:') {
+                window.location.protocol = "https:";
+                return;
+            }
+
+            const MAIN_PAGE = 'https://eos-forum.org';
+
+            const INDEX_PATH = MAIN_PAGE + '/index.html';
+            const REPLACER = '=' + MAIN_PAGE + '/static/';
+
+            //
+            // --- CHANGE this for your specific site settings
+            //
+            const PRESETS = {
+                default_sub: "all",
+                header_texts: [
+
+                ],
+                storage: {
+                    eos_referendum: true,
+                    subscribed_subs: ["all", "novusphere", "eos", "eoscafe", "referendum", "anon-r-eos"],
+                    moderation: {
+                        hide_spam_threads: true,
+                        mods: ["Novusphere/eos-forum-mod"]
+                    },
+                    settings: {
+                        theme: "https://eos-forum.org/static/css/theme/day.css"
+                    }
+                }
+            };
+            //
+            // ---
+            //
+
+            window.localStorage.setItem('presets', JSON.stringify(PRESETS));
+
+            $.get(INDEX_PATH, function (html) {
+                var rx = /=static\//gi;
+                var page = html.replace(rx, REPLACER);
+
+                document.open();
+                document.write(page);
+                document.close();
+            });
+        })();
+    </script>
+</body>
+
+</html>
